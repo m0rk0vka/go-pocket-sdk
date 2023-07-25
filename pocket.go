@@ -187,5 +187,5 @@ func (c *Client) Authorize(ctx context.Context, requsetToken string) (*Authorize
 	return &AuthorizeResponse{
 		AccessToken: accessToken,
 		Username:    username,
-	}
+	}, nil
 }
