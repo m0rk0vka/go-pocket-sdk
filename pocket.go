@@ -163,3 +163,29 @@ func (c *Client) GetAuthorizationURL(requestTokenRequest, redirectUrl string) (s
 
 	return fmt.Sprintf(authorizeURL, requestTokenRequest, redirectUrl), nil
 }
+
+func (c *Client) Authorize(ctx context.Context, requsetToken string) (*AuthorizeResponse, error) {
+	if requsetToken == "" {
+		return nil, errors.New("empty request token")
+	}
+
+	inp := &authorizeRequest{
+		Code:        requsetToken,
+		ConsumerKey: c.consumerKey,
+	}
+
+	values, err := c.doHTTP(ctx, endpointAuthorize, inp)
+	if err != nil {
+		return nil, err
+	}
+
+	accessToken, username := values.Get("access_token"), values.Get("username")
+	if accessToken == "" {
+		return nil, error.New("empty access token in API response")
+	}
+
+	return &AuthorizeResponse{
+		AccessToken: accessToken,
+		Username:    username,
+	}
+}
