@@ -189,3 +189,14 @@ func (c *Client) Authorize(ctx context.Context, requsetToken string) (*Authorize
 		Username:    username,
 	}, nil
 }
+
+func (c *Client) Add(ctx context.Context, input AddInput) error {
+	if err := input.validate; err != nil {
+		return err
+	}
+
+	req := input.generateRequest(c.consumerKey)
+	_, err := c.doHTTP(ctx, endpointAdd, req)
+
+	return err
+}
