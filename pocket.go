@@ -191,7 +191,7 @@ func (c *Client) Authorize(ctx context.Context, requsetToken string) (*Authorize
 }
 
 func (c *Client) Add(ctx context.Context, input AddInput) error {
-	if err := input.validate; err != nil {
+	if err := input.validate(); err != nil {
 		return err
 	}
 
