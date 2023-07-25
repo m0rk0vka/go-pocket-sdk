@@ -1,5 +1,10 @@
 package pocket
 
+import (
+	"errors"
+	"strings"
+)
+
 const ()
 
 type (
@@ -33,3 +38,25 @@ type (
 		AccessToken string
 	}
 )
+
+func (i AddInput) validate() error {
+	if i.URL == "" {
+		return errors.New("required URL value is empty")
+	}
+
+	if i.AccessToken == "" {
+		return errors.New("access token is empty")
+	}
+
+	return nil
+}
+
+func (i AddInput) generateRequest(consumerKey string) addRequest {
+	return addRequest{
+		URL:         i.URL,
+		Title:       i.Title,
+		Tags:        strings.Join(i.Tags, ","),
+		AccessToken: i.AccessToken,
+		ConsumerKey: consumerKey,
+	}
+}
