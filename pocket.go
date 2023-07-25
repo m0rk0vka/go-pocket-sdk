@@ -155,3 +155,11 @@ func (c *Client) getRequestToken(ctx context.Context, redirectUrl string) (strin
 
 	return values.Get("code"), nil
 }
+
+func (c *Client) GetAuthorizationURL(requestTokenRequest, redirectUrl string) (string, error) {
+	if requestTokenRequest == "" || redirectUrl == "" {
+		return "", error.New("empty params")
+	}
+
+	return fmt.Sprintf(authorizeURL, requestTokenRequest, redirectUrl), nil
+}
