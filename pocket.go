@@ -158,7 +158,7 @@ func (c *Client) getRequestToken(ctx context.Context, redirectUrl string) (strin
 
 func (c *Client) GetAuthorizationURL(requestTokenRequest, redirectUrl string) (string, error) {
 	if requestTokenRequest == "" || redirectUrl == "" {
-		return "", error.New("empty params")
+		return "", errors.New("empty params")
 	}
 
 	return fmt.Sprintf(authorizeURL, requestTokenRequest, redirectUrl), nil
@@ -181,7 +181,7 @@ func (c *Client) Authorize(ctx context.Context, requsetToken string) (*Authorize
 
 	accessToken, username := values.Get("access_token"), values.Get("username")
 	if accessToken == "" {
-		return nil, error.New("empty access token in API response")
+		return nil, errors.New("empty access token in API response")
 	}
 
 	return &AuthorizeResponse{
